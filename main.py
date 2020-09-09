@@ -60,6 +60,7 @@ def scrap_content(response, city_title):
         categories.append(category)
 
     for category in categories:
+        print(f'Fetching data related to {city_title} {category}')
         category_title = category.get('title').lower().replace(
             ' ', '-').replace('/',  '-')
         url = category.get('link')
@@ -88,6 +89,8 @@ def scrap_content(response, city_title):
 
             entities.append(entity)
 
+            print(f'Fetched data related to {city_title} {category} {entity}')
+
         save_json(entities, f'data/{city_title}/{category_title}.json')
 
 
@@ -103,12 +106,16 @@ def main():
     cities = scrap_cities(response)
 
     for city in cities:
+        print(f'Fetching data related to {city}')
         city_title = city.get('title').lower().replace(' ', '-')
         url = city.get('link')
 
         os.makedirs(f'data/{city_title}')
         response = do_get(url)
-        scrap_content(response, city_title)
+        try:
+            scrap_content(response, city_title)
+        except Exception as err:
+            print(err)
 
 
 if __name__ == '__main__':
