@@ -60,7 +60,8 @@ def scrap_content(response, city_title):
         categories.append(category)
 
     for category in categories:
-        category_title = category.get('title').lower().replace(' ', '-')
+        category_title = category.get('title').lower().replace(
+            ' ', '-').replace('/',  '-')
         url = category.get('link')
 
         response = do_get(url)
